@@ -26,13 +26,14 @@ def suppressFreqDFTmodel(x, fs, N):
     outputScaleFactor = sum(w)
 
     (mX, pX) = dftAnal(x, w, N)
-    mXnew = copy.deepcopy(mX)
-    index = np.ceil((70.0 * N)/ float(fs))
+    mXnew = mX.copy()
+    index = int(np.ceil((70.0 * N)/ float(fs)))
     for i in range(index):
-        mXnew[i] = -120
+        if i < N:
+            mXnew[i] = -120
     y = dftSynth(mX, pX, M)
     yFilt = dftSynth(mXnew, pX, M)
 
-    return y, yFilt
+    return outputScaleFactor * y, outputScaleFactor * yFilt
     
     ## Your code here
